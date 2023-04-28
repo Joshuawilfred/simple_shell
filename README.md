@@ -1,25 +1,13 @@
 # Background Context
 
-Write a simple UNIX command interpreter.
+A simple UNIX command interpreter.
 
-“The Gates of Shell”, by [Spencer Cheng](https://intranet.alxswe.com/rltoken/AtYRSM03vJDrko9xHodxFQ), featuring [Julien Barbier](https://intranet.alxswe.com/rltoken/-ezXgcyfhc8qU1DeUInLUA)
 
-# Resources
-
-**Read or watch:**
-
-[Unix shell](https://intranet.alxswe.com/rltoken/f0YU9TAhniMXWlSXtb64Yw)
-[Thompson shell](https://intranet.alxswe.com/rltoken/7LJOp2qP7qHUcsOK2-F3qA)
-[Ken Thompson](https://intranet.alxswe.com/rltoken/wTSu31ZP1f7fFTJFgRQC7w)
-Everything you need to know to start coding your own shell concept page
-
-man or help:
 
 `sh` (Run `sh` as well)
 
 # Learning Objectives
 
-At the end of this project, you are expected to be able to [explain to anyone](https://intranet.alxswe.com/rltoken/9LNz86CtOTos9oL3zxIO3A), **without the help of Google**:
 
 ## General
 
@@ -38,14 +26,7 @@ At the end of this project, you are expected to be able to [explain to anyone](h
 - How to suspend the execution of a process until one of its children terminates
 - What is `EOF` / “end-of-file”?
 
-# Copyright - Plagiarism
-
-- You are tasked to come up with solutions for the tasks below yourself to meet with the above learning objectives.
-- You will not be able to meet the objectives of this or any following project by copying and pasting someone else’s work.
-- You are not allowed to publish any content of this project.
-- Any form of plagiarism is strictly forbidden and will result in removal from the program.
-
-# Requirements
+## Requirements
 
 ## General
 
@@ -161,7 +142,4 @@ hsh main.c shell.c test_ls_2
 $
 ```
 
-# Checks
-
-The Checker will be released at the end of the project (1-2 days before the deadline). We strongly encourage the entire class to work together to create a suite of checks covering both regular tests and edge cases for each task. See task 8. Test suite.
 > Author: `Joshua Wilfred` */joshuakaaya216@gmail.com*.
