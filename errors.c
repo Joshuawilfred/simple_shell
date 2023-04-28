@@ -1,91 +1,111 @@
-#include "shell.h"
+#include "root.h"
 
 /**
- * error_msg - prints an error message to stderr
- * @vars: pointer to struct of variables
- * @msg: error message to print
+ * num_len - calculate the lenght of a number.
+ * @num: The number to measure.
  *
- * This function takes a pointer to a struct of variables and an error message,
- * and prints the message to standard error along with some additional
- * information about the program name and line number.
+ * Return: length.
  */
-void error_msg(vars_t *vars, char *msg)
+int num_len(int num)
 {
-    char *count_str; // string representation of vars->count
+	unsigned int num1;
+	int len = 1;
 
-    // print program name and line number to standard error
-    _puts2(vars->argv[0]);
-    _puts2(": ");
-    count_str = _uitoa(vars->count);
-    _puts2(count_str);
-    free(count_str);
-    _puts2(": ");
-    _puts2(vars->av[0]);
+	if (num < 0)
+	{
+		len++;
+		num1 = num * -1;
+	}
+	else
+	{
+		num1 = num;
+	}
+	while (num1 > 9)
+	{
+		len++;
+		num1 /= 10;
+	}
 
-    // print the error message (if provided) or the system error message
-    if (msg)
-        _puts2(msg);
-    else
-        perror("");
+	return (len);
 }
 
 /**
- * _puts2 - prints a string to standard error
- * @str: string to print
+ * _itoa - Functoint to convert an integer to a string.
+ * @num: The integer.
  *
- * This function takes a string and prints it to standard error using the
- * write system call. It also checks if the entire string was printed
- * successfully, and if not, it prints a fatal error message and exits the program.
+ * Return: The converted string.
  */
-void _puts2(char *str)
+char *_itoa(int num)
 {
-    ssize_t num, len;
+	char *buffer;
+	int len = num_len(num);
+	unsigned int num1;
 
-    // get the length of the string and print it to standard error
-    num = _strlen(str);
-    len = write(STDERR_FILENO, str, num);
+	buffer = malloc(sizeof(char) * (len + 1));
+	if (!buffer)
+		return (NULL);
 
-    // check if the entire string was printed successfully
-    if (len != num)
-    {
-        perror("Fatal Error");
-        exit(1);
-    }
+	buffer[len] = '\0';
+
+	if (num < 0)
+	{
+		num1 = num * -1;
+		buffer[0] = '-';
+	}
+	else
+	{
+		num1 = num;
+	}
+
+	len--;
+	do {
+		buffer[len] = (num1 % 10) + '0';
+		num1 /= 10;
+		len--;
+	} while (num1 > 0);
+
+	return (buffer);
 }
 
+
 /**
- * _uitoa - converts an unsigned integer to a string
- * @count: unsigned integer to convert
+ * create_error - displays a custom error message to stderr.
+ * @args: An array of arguments.
+ * @err: The error value.
  *
- * This function takes an unsigned integer and converts it to a string
- * representation, which is returned as a pointer to a newly allocated string.
- * If memory allocation fails, it prints a fatal error message and exits the program.
+ * Return: The error value.
  */
-char *_uitoa(unsigned int count)
+int create_error(char **args, int err)
 {
-    char *numstr; // string representation of count
-    unsigned int tmp, digits;
+	char *error;
 
-    // count the number of digits in the unsigned integer
-    tmp = count;
-    for (digits = 0; tmp != 0; digits++)
-        tmp /= 10;
+	switch (err)
+	{
+	case -1:
+		error = error_env(args);
+		break;
+	case 1:
+		error = error_1(args);
+		break;
+	case 2:
+		if (*(args[0]) == 'e')
+			error = error_2_exit(++args);
+		else if (args[0][0] == ';' || args[0][0] == '&' || args[0][0] == '|')
+			error = error_2_syntax(args);
+		else
+			error = error_2_cd(args);
+		break;
+	case 126:
+		error = error_126(args);
+		break;
+	case 127:
+		error = error_127(args);
+		break;
+	}
+	write(STDERR_FILENO, error, _strlen(error));
 
-    // allocate memory for the string representation of the unsigned integer
-    numstr = malloc(sizeof(char) * (digits + 1));
-    if (numstr == NULL)
-    {
-        perror("Fatal Error");
-        exit(127);
-    }
+	if (error)
+		free(error);
+	return (err);
 
-    // convert the unsigned integer to a string and store it in the allocated memory
-    numstr[digits] = '\0';
-    for (--digits; count; --digits)
-    {
-        numstr[digits] = (count % 10) + '0';
-        count /= 10;
-    }
-
-    return (numstr);
 }
